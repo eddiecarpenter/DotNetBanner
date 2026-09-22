@@ -7,8 +7,14 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  test:
+    name: test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v7
@@ -29,8 +35,38 @@ jobs:
       - name: Test
         run: dotnet test --no-build -c Release --verbosity normal
 
+  package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.x'
+
       # Packaging correctness is invisible to a normal build: the analyzers/ folder
       # layout, the buildTransitive props and the tool manifest only fail once a
       # consumer installs the package. This installs it and checks.
+      #
+      # Ubuntu only -- the script is bash and leans on mktemp, unzip and $HOME paths.
       - name: Verify the packages
         run: ./scripts/test-package.sh
+
+  # A stable check name for branch protection to require. Without it the required
+  # check would be "build (ubuntu-latest)" and friends, so changing the matrix
+  # would silently leave the ruleset waiting for a check that never reports.
+  build:
+    needs: [ test, package ]
+    if: always()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check the matrix results
+        run: |
+          echo "test:    ${{ needs.test.result }}"
+          echo "package: ${{ needs.package.result }}"
+          [ "${{ needs.test.result }}" = "success" ] || exit 1
+          [ "${{ needs.package.result }}" = "success" ] || exit 1
