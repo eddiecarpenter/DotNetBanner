@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/Banner.Tests/Banner.Tests.csproj" />
     <Project Path="src/DotNetBanner.Tool/DotNetBanner.Tool.csproj" />
   </Folder>
   <Project Path="src/Banner.Generator.Tests/Banner.Generator.Tests.csproj" />

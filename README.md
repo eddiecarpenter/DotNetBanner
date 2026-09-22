@@ -90,7 +90,7 @@ was handed, which is the quickest way to check.
 
 ## Printing the banner
 
-Two routes. Pick one.
+Three routes. Pick one.
 
 **Explicit — the .NET way.** One line, and the banner prints when the host starts, above your application's own logs:
 
@@ -116,7 +116,33 @@ that prints the banner **before `Main` runs**, with no code at all:
 Useful for console tools that have no host. Be aware it fires whenever the assembly is loaded — including for
 `--help`, `--version`, and test runs that reference your app.
 
-Printing is idempotent, so enabling both is harmless.
+**Manual — when you want control.** `BannerRuntime` is public, so you can decide yourself when, whether and where the
+banner appears. Two members:
+
+```csharp
+using Banner;
+
+BannerRuntime.PrintBanner();              // writes it to the console — once per process
+string banner = BannerRuntime.Banner();   // returns it — as often as you like
+```
+
+`Banner()` hands back the banner already resolved for the current console — the coloured or the plain variant as
+appropriate, with the `Powered by .NET` tagline appended if enabled — so you do not have to repeat that decision
+yourself:
+
+```csharp
+logger.LogInformation("{Banner}", BannerRuntime.Banner());
+```
+
+> [!IMPORTANT]
+> **`PrintBanner()` prints at most once for the lifetime of the process.** That is what stops the `BannerAutoPrint`
+> and `AddBanner()` routes from doubling up — but it also means a second call does nothing, and does so silently. If
+> `BannerAutoPrint` is on, your call has already been beaten to it.
+>
+> To emit the banner more than once, use `Banner()` and write the string yourself. It has no such latch.
+
+Useful behind a `--quiet` flag, only in `Development`, after a configuration check, or somewhere other than
+`Console.Out`.
 
 ## Configuration
 

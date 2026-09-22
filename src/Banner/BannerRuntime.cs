@@ -80,16 +80,28 @@ public static class BannerRuntime
     /// <c>Powered by .NET</c> tagline when enabled. Empty if no banner has been registered.
     /// </summary>
     public static string Banner()
+        => Banner(useColor: SupportsColor(), poweredBy: PoweredBy);
+
+    /// <summary>
+    /// The banner with the variant and tagline chosen explicitly, rather than detected from the console.
+    /// <para>
+    /// Prefer the parameterless <see cref="Banner()"/> unless you have a reason to override the detection — for
+    /// example forcing colour when writing somewhere you know renders it, or dropping the tagline for one call.
+    /// </para>
+    /// </summary>
+    /// <param name="useColor">Whether to return the ANSI-coloured variant rather than the plain one.</param>
+    /// <param name="poweredBy">Whether to append the <c>Powered by .NET</c> tagline.</param>
+    /// <returns>The banner, or an empty string if none has been registered.</returns>
+    public static string Banner(bool useColor, bool poweredBy)
     {
         if (Plain is null || Colored is null)
         {
             return "";
         }
 
-        var banner = SupportsColor() ? Colored : Plain;
-
+        var banner = useColor ? Colored : Plain;
         string tagline = "";
-        if (PoweredBy)
+        if (poweredBy)
         {
             // Use the plain version. It has the same length as the coloured version without the escape codes
             var width = Plain.Split('\n').Max(line => line.Length);
