@@ -53,15 +53,26 @@ to consult at the point it runs.
     <BannerAlignment>center</BannerAlignment>
 </PropertyGroup>
 
+<!-- Every property needs one of these, whether or not you set it above. -->
 <ItemGroup>
     <CompilerVisibleProperty Include="BannerText" />
     <CompilerVisibleProperty Include="BannerFont" />
+    <CompilerVisibleProperty Include="BannerColor" />
     <CompilerVisibleProperty Include="BannerAlignment" />
+    <CompilerVisibleProperty Include="BannerLineSpacing" />
+    <CompilerVisibleProperty Include="PoweredBy" />
+    <CompilerVisibleProperty Include="AutoPrint" />
 </ItemGroup>
 ```
 
-The `CompilerVisibleProperty` items are what hand each property to the generator; a property without one is invisible to
-it. (A future NuGet package will declare these for you.)
+The `CompilerVisibleProperty` items are what hand each property to the generator. **A property without one is invisible
+to it** — the build succeeds, and your setting is silently ignored in favour of the default. Declare all seven up front
+and you cannot hit that.
+
+If a setting appears to have no effect, `obj/Debug/<tfm>/<Project>.GeneratedMSBuildEditorConfig.editorconfig` lists
+exactly what the compiler was handed.
+
+(A future NuGet package will declare these for you, via a `buildTransitive` props file.)
 
 ## Printing the banner
 
