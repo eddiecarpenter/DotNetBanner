@@ -2,14 +2,33 @@ using System.Runtime.InteropServices;
 
 namespace Banner;
 
+/// <summary>
+/// Holds the banner rendered at build time and prints it.
+/// <para>
+/// The generated <c>[ModuleInitializer]</c> calls <see cref="Register"/> before <c>Main</c> runs, so the
+/// banner is available from the moment the assembly loads. Print it with <c>builder.AddBanner()</c>, or
+/// set <c>&lt;BannerAutoPrint&gt;true&lt;/BannerAutoPrint&gt;</c> to have the generator print it for you.
+/// </para>
+/// </summary>
 public static class BannerRuntime
 {
     private static int _printed = 0;
 
+    /// <summary>The banner with no ANSI escape codes. <c>null</c> until <see cref="Register"/> is called.</summary>
     public static string? Plain { get; private set; }
+
+    /// <summary>The banner with ANSI colour codes. <c>null</c> until <see cref="Register"/> is called.</summary>
     public static string? Colored { get; private set; }
+
+    /// <summary>Whether to append the <c>Powered by .NET</c> tagline. Set by <c>&lt;BannerPoweredBy&gt;</c>.</summary>
     public static bool PoweredBy { get; private set; }
 
+    /// <summary>
+    /// Supplies the banner rendered at build time. Called by generated code; you should not need to call it.
+    /// </summary>
+    /// <param name="plain">The banner without escape codes.</param>
+    /// <param name="colored">The banner with ANSI colour codes.</param>
+    /// <param name="poweredBy">Whether to append the <c>Powered by .NET</c> tagline.</param>
     public static void Register(string plain, string colored, bool poweredBy)
     {
         Plain = plain;
@@ -17,6 +36,10 @@ public static class BannerRuntime
         PoweredBy = poweredBy;
     }
 
+    /// <summary>
+    /// Whether the console can render ANSI colour: <c>NO_COLOR</c> unset, output not redirected, and
+    /// <c>TERM</c> not <c>dumb</c>.
+    /// </summary>
     private static bool SupportsColor()
     {
         // The NO_COLOR convention (no-color.org): any non-empty value disables colour.
@@ -34,6 +57,10 @@ public static class BannerRuntime
         return !string.Equals(Environment.GetEnvironmentVariable("TERM"), "dumb", StringComparison.Ordinal);
     }
 
+    /// <summary>
+    /// Writes the banner to the console. Does nothing on a second call, so the module-initializer and
+    /// <c>AddBanner()</c> routes cannot print it twice.
+    /// </summary>
     public static void PrintBanner()
     {
         if (Interlocked.Exchange(ref _printed, 1) == 0)
@@ -42,6 +69,10 @@ public static class BannerRuntime
         }
     }
 
+    /// <summary>
+    /// The banner as it would be printed: the coloured or plain variant according to the console, plus the
+    /// <c>Powered by .NET</c> tagline when enabled. Empty if no banner has been registered.
+    /// </summary>
     public static string Banner()
     {
         if (Plain is null || Colored is null)
@@ -49,7 +80,6 @@ public static class BannerRuntime
             return "";
         }
 
-        // For now use the coloured version until we have a way to detect it
         var banner = SupportsColor() ? Colored : Plain;
 
         string tagline = "";
