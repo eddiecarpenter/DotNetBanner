@@ -1,10 +1,23 @@
 # DotNetBanner
 
+[![NuGet](https://img.shields.io/nuget/v/DotNetBanner?logo=nuget&label=DotNetBanner&style=flat-square)](https://www.nuget.org/packages/DotNetBanner)
+[![NuGet](https://img.shields.io/nuget/v/DotNetBanner.Tool?logo=nuget&label=dotnet-banner&style=flat-square)](https://www.nuget.org/packages/DotNetBanner.Tool)
+[![Build](https://github.com/eddiecarpenter/DotNetBanner/actions/workflows/build.yml/badge.svg)](https://github.com/eddiecarpenter/DotNetBanner/actions/workflows/build.yml)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0)
+
 Generate a **colourful** [FIGlet](https://en.wikipedia.org/wiki/FIGlet) ASCII-art startup banner for your .NET
 application — rendered at **build time** from a piece of text and a font, painted in the ANSI colours you choose, and
 printed when your application starts.
 
 A .NET port of the [Quarkus Banner extension](https://github.com/quarkiverse/quarkus-banner).
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/eddiecarpenter/DotNetBanner/main/docs/dotnetbanner.png" alt="A startup banner reading DotNetBanner, with Banner in red, above a right-aligned Powered by .NET tagline" width="620">
+</p>
+
+```xml
+<BannerText>DotNet{red}Banner</BannerText>
+```
 
 ### Highlights
 
@@ -29,14 +42,15 @@ The 3 MB of fonts live in the analyzer assembly, which the compiler loads and yo
 
 ## Installation
 
-> Not yet published to NuGet. For now, reference the projects directly:
+```bash
+dotnet add package DotNetBanner
+```
+
+Or in your `.csproj`:
 
 ```xml
 <ItemGroup>
-    <ProjectReference Include="..\Banner\Banner.csproj" />
-    <ProjectReference Include="..\Banner.Generator\Banner.Generator.csproj"
-                      OutputItemType="Analyzer"
-                      ReferenceOutputAssembly="false" />
+    <PackageReference Include="DotNetBanner" Version="1.0.0-preview.1" />
 </ItemGroup>
 ```
 
@@ -240,10 +254,9 @@ browse the list with authors in [FIGLET-FONTS.md](FIGLET-FONTS.md).
 
 A companion .NET tool for choosing a font and colour without rebuilding your application.
 
-> Not yet published. For now, run it from the repository:
-> `dotnet run --project src/DotNetBanner.Tool -- <command>`
->
-> Once published: `dotnet tool install -g DotNetBanner.Tool`
+```bash
+dotnet tool install -g DotNetBanner.Tool
+```
 
 ```bash
 dotnet banner list-fonts     # the 246 bundled fonts, one per line
