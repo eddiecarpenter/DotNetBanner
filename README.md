@@ -5,6 +5,11 @@
 [![Build](https://github.com/eddiecarpenter/DotNetBanner/actions/workflows/build.yml/badge.svg)](https://github.com/eddiecarpenter/DotNetBanner/actions/workflows/build.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0)
 
+![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?style=flat-square&logo=dotnet&logoColor=white)
+![Windows](https://img.shields.io/badge/Windows-0078D6?style=flat-square&logo=windows&logoColor=white)
+![macOS](https://img.shields.io/badge/macOS-000000?style=flat-square&logo=apple&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)
+
 Generate a **colourful** [FIGlet](https://en.wikipedia.org/wiki/FIGlet) ASCII-art startup banner for your .NET
 application — rendered at **build time** from a piece of text and a font, painted in the ANSI colours you choose, and
 printed when your application starts.
@@ -39,6 +44,19 @@ renders your text into ASCII art and emits it into your assembly as a `const str
 - a typo in a font name or colour is a **compile error**, not a surprise at start-up.
 
 The 3 MB of fonts live in the analyzer assembly, which the compiler loads and your application never references.
+
+## Requirements
+
+- **.NET 10** or later
+- **Windows, macOS and Linux** — build and tests run on all three in CI
+
+The renderer runs inside the compiler, so nothing platform-specific reaches your application: it
+ships a string constant.
+
+> [!NOTE]
+> On Windows, ANSI escape sequences are only interpreted when virtual terminal processing is enabled
+> on the console handle. Windows Terminal generally has it on; the legacy console host does not, and
+> this package does not enable it for you. See [Colour](#colour).
 
 ## Installation
 
