@@ -221,7 +221,8 @@ and typos are caught at build time with a suggestion:
 error BAN001: Unknown banner font 'dooom'. Did you mean 'doom'?
 ```
 
-The full list and their authors is in [FIGLET-FONTS.md](FIGLET-FONTS.md).
+Run `dotnet banner list-fonts` to see them all (see [the tool](#the-dotnet-banner-tool)), or
+browse the list with authors in [FIGLET-FONTS.md](FIGLET-FONTS.md).
 
 > **Licensing note:** the bundled fonts originate from the FIGlet font collection and are authored by many individuals
 > under varied terms. Each font's original header (including author credit) is preserved in the `.flf` file; they are
@@ -234,6 +235,48 @@ The full list and their authors is in [FIGLET-FONTS.md](FIGLET-FONTS.md).
 | `BAN001` | `BannerFont` is not a bundled font (suggests the nearest match) |
 | `BAN002` | `BannerColor` is not a name, hex colour, or `default`           |
 | `BAN003` | `BannerAlignment` is not `left`, `center` or `right`            |
+
+## The `dotnet banner` tool
+
+A companion .NET tool for choosing a font and colour without rebuilding your application.
+
+> Not yet published. For now, run it from the repository:
+> `dotnet run --project src/DotNetBanner.Tool -- <command>`
+>
+> Once published: `dotnet tool install -g DotNetBanner.Tool`
+
+```bash
+dotnet banner list-fonts     # the 246 bundled fonts, one per line
+dotnet banner list-colors    # the named colours, each printed in its own colour
+dotnet banner preview        # render a banner to the console
+```
+
+`preview` accepts the same values as the MSBuild properties:
+
+```bash
+dotnet banner preview --font doom --text "{red}My {bright-cyan}Service"
+dotnet banner preview --font slant --text "Dot\nNet" --alignment center --spacing 2
+```
+
+| Option        | Default    |
+|---------------|------------|
+| `--font`      | `standard` |
+| `--text`      | `Banner`   |
+| `--color`     | `default`  |
+| `--alignment` | `left`     |
+| `--spacing`   | `1`        |
+| `--powered-by`| `true`     |
+
+It renders through the same code your build does, so what you see is what your application will
+print — including the plain/coloured choice and the `Powered by .NET` tagline. An unknown font gives
+the same suggestion as the build error:
+
+```
+$ dotnet banner preview --font dooom
+Unknown font 'dooom'. Did you mean 'doom'?
+```
+
+`dotnet banner --help` lists everything; each command has its own `--help`.
 
 ## Rendering
 
