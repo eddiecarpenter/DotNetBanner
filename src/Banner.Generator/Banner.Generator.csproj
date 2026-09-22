@@ -12,6 +12,7 @@
 
     <ItemGroup>
         <InternalsVisibleTo Include="Banner.Generator.Tests"/>
+        <InternalsVisibleTo Include="DotNetBanner.Tool"/>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" PrivateAssets="all"/>
         <EmbeddedResource Include="Fonts\*.flf"/>
     </ItemGroup>

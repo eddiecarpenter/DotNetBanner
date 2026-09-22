@@ -12,7 +12,7 @@ internal sealed record ResolvedColor(string? Sgr)
     ///     Standard colours use the 16-colour codes; orange has no 16-colour slot, so it uses a
     ///     24-bit truecolor sequence.
     /// </summary>
-    private static readonly Dictionary<string, ResolvedColor> Named = new(StringComparer.OrdinalIgnoreCase)
+    internal static readonly Dictionary<string, ResolvedColor> Named = new(StringComparer.OrdinalIgnoreCase)
     {
         ["black"] = new ResolvedColor("30"),
         ["red"] = new ResolvedColor("31"),

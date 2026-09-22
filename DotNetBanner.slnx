@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DotNetBanner.Tool/DotNetBanner.Tool.csproj" />
+  </Folder>
   <Project Path="src/Banner.Generator.Tests/Banner.Generator.Tests.csproj" />
   <Project Path="src/Banner.Generator/Banner.Generator.csproj" />
   <Project Path="src/Banner.Sample.Api/Banner.Sample.Api.csproj" />

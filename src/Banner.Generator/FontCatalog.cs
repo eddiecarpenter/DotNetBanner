@@ -11,7 +11,7 @@ internal static class FontCatalog
     private const string Suffix = ".flf";
     private const string FontPrefix = "Banner.Generator.Fonts.";
 
-    private static string[] AvailableFonts() =>
+    internal static string[] AvailableFonts() =>
         typeof(FontCatalog).Assembly.GetManifestResourceNames()
             .Where(n => n.StartsWith(FontPrefix, StringComparison.Ordinal)
                         && n.EndsWith(Suffix, StringComparison.Ordinal))

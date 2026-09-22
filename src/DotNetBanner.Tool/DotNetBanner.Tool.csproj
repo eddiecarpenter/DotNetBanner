@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <PackAsTool>true</PackAsTool>
+        <ToolCommandName>dotnet-banner</ToolCommandName>
+        <PackageId>DotNetBanner.Tool</PackageId>
+        <Version>0.1.0</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Banner.Generator\Banner.Generator.csproj"/>
+    </ItemGroup>
+  
+</Project>
