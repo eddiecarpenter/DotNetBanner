@@ -11,8 +11,8 @@
 
         <BannerText>{red}My {blue}Service\nTesting</BannerText>
         <BannerFont>doom</BannerFont>
-        <PoweredBy>true</PoweredBy>
-        <AutoPrint>true</AutoPrint>
+        <BannerPoweredBy>true</BannerPoweredBy>
+        <BannerAutoPrint>true</BannerAutoPrint>
         <BannerColor>default</BannerColor>
         <BannerAlignment>right</BannerAlignment>
         <BannerLineSpacing>1</BannerLineSpacing>

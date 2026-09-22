@@ -11,8 +11,8 @@
         <BannerColor>default</BannerColor>
         <BannerAlignment>right</BannerAlignment>
         <BannerLineSpacing>1</BannerLineSpacing>
-        <PoweredBy>true</PoweredBy>
-        <AutoPrint>false</AutoPrint>
+        <BannerPoweredBy>true</BannerPoweredBy>
+        <BannerAutoPrint>false</BannerAutoPrint>
     </PropertyGroup>
 
     <!-- The same file the NuGet package ships; consumers get it automatically. -->

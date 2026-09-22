@@ -91,12 +91,12 @@ var app = builder.Build();
 `AddBanner()` extends `IHostApplicationBuilder`, so it works for both `WebApplication` and `Host` builders. It registers
 a hosted service, and touches nothing else — your logging configuration is left alone.
 
-**Automatic — no host required.** Set `<AutoPrint>true</AutoPrint>` and the generator emits a
+**Automatic — no host required.** Set `<BannerAutoPrint>true</BannerAutoPrint>` and the generator emits a
 [`[ModuleInitializer]`](https://learn.microsoft.com/dotnet/csharp/language-reference/attributes/general#moduleinitializer-attribute)
 that prints the banner **before `Main` runs**, with no code at all:
 
 ```xml
-<AutoPrint>true</AutoPrint>
+<BannerAutoPrint>true</BannerAutoPrint>
 ```
 
 Useful for console tools that have no host. Be aware it fires whenever the assembly is loaded — including for
@@ -115,8 +115,8 @@ All values are fixed at build time.
 | `BannerColor`        | `string` | `default`  | Foreground colour for text not covered by a marker. An unknown value fails the build.    |
 | `BannerAlignment`    | `string` | `left`     | `left`, `center` or `right`. An unknown value fails the build.                            |
 | `BannerLineSpacing`  | `int`    | `1`        | Blank rows between the lines of a multi-line banner.                                     |
-| `PoweredBy`          | `bool`   | `true`     | Append a right-aligned `Powered by .NET <version>` tagline.                              |
-| `AutoPrint`          | `bool`   | `false`    | Emit a module initializer that prints the banner before `Main`.                          |
+| `BannerPoweredBy`          | `bool`   | `true`     | Append a right-aligned `Powered by .NET <version>` tagline.                              |
+| `BannerAutoPrint`          | `bool`   | `false`    | Emit a module initializer that prints the banner before `Main`.                          |
 
 ## Colour
 

@@ -16,8 +16,8 @@ public class BannerGenerator : IIncrementalGenerator
                 provider.GlobalOptions.TryGetValue("build_property.BannerColor", out var fontColor);
                 provider.GlobalOptions.TryGetValue("build_property.BannerAlignment", out var alignment);
                 provider.GlobalOptions.TryGetValue("build_property.BannerLineSpacing", out var lineSpacing);
-                provider.GlobalOptions.TryGetValue("build_property.PoweredBy", out var poweredBy);
-                provider.GlobalOptions.TryGetValue("build_property.AutoPrint", out var autoPrint);
+                provider.GlobalOptions.TryGetValue("build_property.BannerPoweredBy", out var poweredBy);
+                provider.GlobalOptions.TryGetValue("build_property.BannerAutoPrint", out var autoPrint);
 
                 return new BannerOptions(
                     string.IsNullOrWhiteSpace(text) ? "Banner" : text!,

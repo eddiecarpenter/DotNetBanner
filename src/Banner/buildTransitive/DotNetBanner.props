@@ -11,8 +11,8 @@
         <CompilerVisibleProperty Include="BannerColor" />
         <CompilerVisibleProperty Include="BannerAlignment" />
         <CompilerVisibleProperty Include="BannerLineSpacing" />
-        <CompilerVisibleProperty Include="PoweredBy" />
-        <CompilerVisibleProperty Include="AutoPrint" />
+        <CompilerVisibleProperty Include="BannerPoweredBy" />
+        <CompilerVisibleProperty Include="BannerAutoPrint" />
     </ItemGroup>
 
 </Project>
