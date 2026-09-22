@@ -4,9 +4,17 @@ using Banner.Generator;
 return args switch
 {
     [] or ["help"] or ["--help"] or ["-h"] => Usage(0),
+
     ["list-fonts"] => ListFonts(),
-    ["list-colors"] or ["list-colours"] => ListColours(),
+    ["list-fonts", "--help" or "-h"] => CommandUsage("list-fonts", "List the bundled FIGlet fonts, one per line.", 0),
+    ["list-fonts", ..] => Fail("'list-fonts' takes no options."),
+
+    ["list-colors" or "list-colours"] => ListColours(),
+    ["list-colors" or "list-colours", "--help" or "-h"] => CommandUsage("list-colors", "List the named colours, each printed in its own colour.", 0),
+    ["list-colors" or "list-colours", ..] => Fail("'list-colors' takes no options."),
+
     ["preview", .. var rest] => Preview(rest),
+
     [var unknown, ..] => UnknownCommand(unknown)
 };
 
@@ -141,6 +149,15 @@ static void PreviewOptions()
 
           dotnet banner preview --font doom --text "{red}My {bright-cyan}Service"
         """);
+}
+
+static int CommandUsage(string command, string description, int exitCode)
+{
+    Console.WriteLine($"Usage: dotnet banner {command}");
+    Console.WriteLine();
+    Console.WriteLine($"  {description}");
+
+    return exitCode;
 }
 
 static int UnknownCommand(string command)
