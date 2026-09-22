@@ -120,30 +120,82 @@ All values are fixed at build time.
 
 ## Colour
 
-**One colour** for the whole banner:
+A colour can be set in two places, and both accept exactly the same values:
 
 ```xml
+<!-- the whole banner -->
 <BannerColor>bright-cyan</BannerColor>
 ```
 
-**Multiple colours** — embed `{colour}` markers in the text. Each part is painted independently, per character, so the
-FIGlet kerning still tucks the letters together:
-
 ```xml
+<!-- or per section, with inline markers -->
 <BannerText>{red}My {bright-cyan}Service</BannerText>
 ```
 
-- `{default}` returns to the terminal's own colour, and a `{token}` that isn't a colour is left in the text verbatim.
-- Accepted: `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white`, `orange` and their `bright-*`
-  variants (case-insensitive); any `#rgb` / `#rrggbb` hex colour; or `default`. Hex and `orange` use 24-bit truecolor,
-  so they need a truecolor-capable terminal.
+Markers are painted **per character**, so FIGlet's kerning is preserved and slanted fonts still tuck their letters
+together across a colour change.
 
-**Colour is only emitted when the console supports it.** Both a coloured and a plain banner are produced at build time,
-and the runtime picks between them based on the [`NO_COLOR`](https://no-color.org) convention, whether output is
-redirected, and `TERM`. Redirected output and log files never see stray escape codes.
+### Any RGB colour
 
-> On Windows, ANSI escape sequences require virtual terminal processing, which this package does not enable. Windows
-> Terminal generally has it on; the legacy console host does not.
+You are not limited to a fixed palette. Any `#rrggbb` value works, in either place:
+
+```xml
+<BannerColor>#33ccff</BannerColor>
+```
+
+```xml
+<BannerText>{#ff8800}Dot{#33ccff}Net</BannerText>
+```
+
+- Three-digit shorthand expands the usual way — `#f80` is `#ff8800`.
+- Hex colours are emitted as **24-bit truecolor** escape sequences, so they need a truecolor-capable terminal.
+  Most modern ones qualify; a bare TTY may not.
+
+### Named colours
+
+Sixteen standard ANSI colours, matched case-insensitively:
+
+| Standard  | Bright           |
+|-----------|------------------|
+| `black`   | `bright-black`   |
+| `red`     | `bright-red`     |
+| `green`   | `bright-green`   |
+| `yellow`  | `bright-yellow`  |
+| `blue`    | `bright-blue`    |
+| `magenta` | `bright-magenta` |
+| `cyan`    | `bright-cyan`    |
+| `white`   | `bright-white`   |
+
+Plus `orange`, which the 16-colour palette has no slot for — it is emitted as truecolor, like a hex value.
+
+These names are a convenience for the colours a terminal renders most reliably. For anything else, use hex.
+
+### `default`
+
+`default` leaves the terminal's own foreground colour untouched, emitting no escape codes at all. It is the default
+value of `BannerColor`, and `{default}` returns to it mid-text:
+
+```xml
+<BannerText>{red}Warning{default} — see the log</BannerText>
+```
+
+A `{token}` that isn't a recognised colour is **left in the text verbatim** and rendered as ASCII art, rather than
+silently disappearing.
+
+### When colour is emitted
+
+Both a coloured and a plain banner are produced at build time, and the runtime picks between them. Colour is used only
+when all of these hold:
+
+- [`NO_COLOR`](https://no-color.org) is unset or empty
+- output is not redirected — `Console.IsOutputRedirected` is `false`
+- `TERM` is not `dumb`
+
+So piping to a file, or into `grep`, or running under a CI log collector gives you the plain banner. Escape codes never
+reach a log file.
+
+> **Windows:** ANSI escape sequences require virtual terminal processing to be enabled on the console handle. Windows
+> Terminal generally has it on; the legacy console host does not, and this package does not enable it for you.
 
 ## Multiple lines
 
