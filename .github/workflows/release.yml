@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags: [ 'v*' ]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      # The tag is the single source of truth for the version, so a published
+      # package and the commit it came from can never disagree. v0.1.0 -> 0.1.0
+      - name: Derive the version from the tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Test
+        run: dotnet test -c Release --verbosity normal
+
+      - name: Verify the packages
+        run: ./scripts/test-package.sh
+
+      - name: Pack
+        run: |
+          dotnet pack src/Banner            -c Release -p:Version=${{ steps.version.outputs.version }} -o artifacts
+          dotnet pack src/DotNetBanner.Tool -c Release -p:Version=${{ steps.version.outputs.version }} -o artifacts
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: artifacts/*
+
+      # NuGet versions are immutable: a bad push cannot be replaced, only unlisted.
+      # Everything above has to pass before this runs.
+      - name: Push to NuGet
+        run: >
+          dotnet nuget push "artifacts/*.nupkg"
+          --source https://api.nuget.org/v3/index.json
+          --api-key ${{ secrets.NUGET_API_KEY }}
+          --skip-duplicate

@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # SourceLink stamps the commit into the PDB; give it the full history.
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+      - name: Test
+        run: dotnet test --no-build -c Release --verbosity normal
+
+      # Packaging correctness is invisible to a normal build: the analyzers/ folder
+      # layout, the buildTransitive props and the tool manifest only fail once a
+      # consumer installs the package. This installs it and checks.
+      - name: Verify the packages
+        run: ./scripts/test-package.sh
