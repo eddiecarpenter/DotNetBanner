@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="src/Banner.Generator.Tests/Banner.Generator.Tests.csproj" />
+  <Project Path="src/Banner.Generator/Banner.Generator.csproj" />
+  <Project Path="src/Banner.Sample.Api/Banner.Sample.Api.csproj" />
+  <Project Path="src/Banner.Sample.Cli/Banner.Sample.Cli.csproj" />
+  <Project Path="src/Banner/Banner.csproj" />
+</Solution>

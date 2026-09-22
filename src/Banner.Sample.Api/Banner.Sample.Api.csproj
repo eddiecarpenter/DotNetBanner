@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+
+        <BannerText>{bright-cyan}Banner {white}API</BannerText>
+        <BannerFont>doom</BannerFont>
+        <BannerColor>default</BannerColor>
+        <BannerAlignment>right</BannerAlignment>
+        <BannerLineSpacing>1</BannerLineSpacing>
+        <PoweredBy>true</PoweredBy>
+        <AutoPrint>false</AutoPrint>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Banner\Banner.csproj"/>
+        <ProjectReference Include="..\Banner.Generator\Banner.Generator.csproj"
+                          OutputItemType="Analyzer"
+                          ReferenceOutputAssembly="false"/>
+
+        <CompilerVisibleProperty Include="BannerText"/>
+        <CompilerVisibleProperty Include="BannerFont"/>
+        <CompilerVisibleProperty Include="PoweredBy"/>
+        <CompilerVisibleProperty Include="AutoPrint"/>
+        <CompilerVisibleProperty Include="BannerColor"/>
+        <CompilerVisibleProperty Include="BannerAlignment"/>
+        <CompilerVisibleProperty Include="BannerLineSpacing"/>
+    </ItemGroup>
+</Project>
