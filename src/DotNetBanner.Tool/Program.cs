@@ -3,10 +3,11 @@ using Banner.Generator;
 
 return args switch
 {
+    [] or ["help"] or ["--help"] or ["-h"] => Usage(0),
     ["list-fonts"] => ListFonts(),
     ["list-colors"] or ["list-colours"] => ListColours(),
     ["preview", .. var rest] => Preview(rest),
-    _ => Usage()
+    [var unknown, ..] => UnknownCommand(unknown)
 };
 
 static int ListFonts()
@@ -38,6 +39,16 @@ static int ListColours()
 
 static int Preview(string[] args)
 {
+    if (args is ["--help"] or ["-h"])
+    {
+        return Usage(0);
+    }
+
+    if (args.Length % 2 != 0)
+    {
+        return Fail($"Option '{args[^1]}' is missing a value.");
+    }
+
     var font = "standard";
     var text = "Banner";
     var colour = "default";
@@ -45,7 +56,7 @@ static int Preview(string[] args)
     var spacing = 1;
     var poweredBy = true;
 
-    for (var i = 0; i + 1 < args.Length; i += 2)
+    for (var i = 0; i < args.Length; i += 2)
     {
         switch (args[i])
         {
@@ -88,7 +99,7 @@ static int Preview(string[] args)
     return 0;
 }
 
-static int Usage()
+static int Usage(int exitCode)
 {
     Console.WriteLine("""
         Usage: dotnet banner <command>
@@ -111,7 +122,15 @@ static int Usage()
           dotnet banner preview --font doom --text "{red}My {bright-cyan}Service"
         """);
 
-    return 0;
+    return exitCode;
+}
+
+static int UnknownCommand(string command)
+{
+    Console.Error.WriteLine($"Unknown command '{command}'.");
+    Console.Error.WriteLine();
+
+    return Usage(1);
 }
 
 static int Fail(string message)
