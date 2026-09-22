@@ -14,13 +14,15 @@ on:
 
 permissions:
   contents: read
+  id-token: write   # lets GitHub mint the OIDC token nuget.org exchanges for a key
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
-    # Optional: configure a "nuget" environment in repository settings with
-    # required reviewers to add an approval step before this runs.
+    # Must match the Environment field of the nuget.org trusted publishing policy.
+    # Configure it in repository settings with required reviewers to add an
+    # approval gate before anything is published.
     environment: nuget
 
     steps:
@@ -47,9 +49,18 @@ jobs:
       - name: List what is about to be published
         run: ls -l artifacts
 
+      # Trusted Publishing: exchanges a short-lived GitHub OIDC token for a NuGet
+      # API key valid for one hour, so there is no long-lived secret to store,
+      # rotate or leak. Done immediately before the push, because the key expires.
+      - name: NuGet login
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: Push to NuGet
         run: >
           dotnet nuget push "artifacts/*.nupkg"
           --source https://api.nuget.org/v3/index.json
-          --api-key ${{ secrets.NUGET_API_KEY }}
+          --api-key ${{ steps.login.outputs.NUGET_API_KEY }}
           --skip-duplicate
