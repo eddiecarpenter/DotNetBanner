@@ -41,12 +41,12 @@ static int Preview(string[] args)
 {
     if (args is ["--help"] or ["-h"])
     {
-        return Usage(0);
+        return PreviewUsage(0);
     }
 
     if (args.Length % 2 != 0)
     {
-        return Fail($"Option '{args[^1]}' is missing a value.");
+        return Fail($"Option '{args[^1]}' is missing a value. Run 'dotnet banner preview --help'.");
     }
 
     var font = "standard";
@@ -66,7 +66,7 @@ static int Preview(string[] args)
             case "--alignment": alignment = args[i + 1]; break;
             case "--spacing": spacing = int.TryParse(args[i + 1], out var n) ? n : 1; break;
             case "--powered-by": poweredBy = !bool.TryParse(args[i + 1], out var on) || on; break;
-            default: return Fail($"Unknown option '{args[i]}'.");
+            default: return Fail($"Unknown option '{args[i]}'. Run 'dotnet banner preview --help'.");
         }
     }
 
@@ -107,10 +107,30 @@ static int Usage(int exitCode)
           list-fonts                 List the bundled FIGlet fonts.
           list-colors                List the named colours.
           preview [options]          Render a banner to the console.
+        """);
 
+    Console.WriteLine();
+    PreviewOptions();
+
+    return exitCode;
+}
+
+static int PreviewUsage(int exitCode)
+{
+    Console.WriteLine("Usage: dotnet banner preview [options]");
+    Console.WriteLine();
+
+    PreviewOptions();
+
+    return exitCode;
+}
+
+static void PreviewOptions()
+{
+    Console.WriteLine("""
         Preview options:
 
-          --font <name>              Font to render with           (default: standard)
+          --font <name>              Font to render with            (default: standard)
           --text <text>              Text, with {colour} markers    (default: Banner)
           --color <colour>           Colour for unmarked text       (default: default)
           --alignment <alignment>    left, center or right          (default: left)
@@ -121,8 +141,6 @@ static int Usage(int exitCode)
 
           dotnet banner preview --font doom --text "{red}My {bright-cyan}Service"
         """);
-
-    return exitCode;
 }
 
 static int UnknownCommand(string command)
