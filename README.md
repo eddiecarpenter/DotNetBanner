@@ -52,27 +52,27 @@ to consult at the point it runs.
     <BannerFont>doom</BannerFont>
     <BannerAlignment>center</BannerAlignment>
 </PropertyGroup>
-
-<!-- Every property needs one of these, whether or not you set it above. -->
-<ItemGroup>
-    <CompilerVisibleProperty Include="BannerText" />
-    <CompilerVisibleProperty Include="BannerFont" />
-    <CompilerVisibleProperty Include="BannerColor" />
-    <CompilerVisibleProperty Include="BannerAlignment" />
-    <CompilerVisibleProperty Include="BannerLineSpacing" />
-    <CompilerVisibleProperty Include="PoweredBy" />
-    <CompilerVisibleProperty Include="AutoPrint" />
-</ItemGroup>
 ```
 
-The `CompilerVisibleProperty` items are what hand each property to the generator. **A property without one is invisible
-to it** — the build succeeds, and your setting is silently ignored in favour of the default. Declare all seven up front
-and you cannot hit that.
+That is all you need. The package declares the corresponding `CompilerVisibleProperty` items for you,
+through a `buildTransitive` props file that NuGet imports automatically.
 
-If a setting appears to have no effect, `obj/Debug/<tfm>/<Project>.GeneratedMSBuildEditorConfig.editorconfig` lists
-exactly what the compiler was handed.
+<details>
+<summary>Referencing the projects directly instead of the package?</summary>
 
-(A future NuGet package will declare these for you, via a `buildTransitive` props file.)
+MSBuild properties are invisible to a source generator unless declared with `CompilerVisibleProperty`,
+and that declaration arrives with the NuGet package. If you are using `ProjectReference`, import the
+same file the package ships:
+
+```xml
+<Import Project="..\Banner\buildTransitive\DotNetBanner.props" />
+```
+
+Without it the build still succeeds and every setting is silently ignored in favour of its default.
+`obj/Debug/<tfm>/<Project>.GeneratedMSBuildEditorConfig.editorconfig` lists exactly what the compiler
+was handed, which is the quickest way to check.
+
+</details>
 
 ## Printing the banner
 

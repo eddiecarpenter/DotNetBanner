@@ -18,18 +18,14 @@
         <BannerLineSpacing>1</BannerLineSpacing>
     </PropertyGroup>
 
+    <!-- The same file the NuGet package ships; consumers get it automatically. -->
+    <Import Project="..\Banner\buildTransitive\DotNetBanner.props"/>
+
     <ItemGroup>
         <ProjectReference Include="..\Banner\Banner.csproj"/>
         <ProjectReference Include="..\Banner.Generator\Banner.Generator.csproj"
                           OutputItemType="Analyzer"
                           ReferenceOutputAssembly="false"/>
 
-        <CompilerVisibleProperty Include="BannerText"/>
-        <CompilerVisibleProperty Include="BannerFont"/>
-        <CompilerVisibleProperty Include="PoweredBy"/>
-        <CompilerVisibleProperty Include="AutoPrint"/>
-        <CompilerVisibleProperty Include="BannerColor"/>
-        <CompilerVisibleProperty Include="BannerAlignment"/>
-        <CompilerVisibleProperty Include="BannerLineSpacing"/>
     </ItemGroup>
 </Project>
