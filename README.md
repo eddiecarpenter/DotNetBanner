@@ -117,7 +117,7 @@ Useful for console tools that have no host. Be aware it fires whenever the assem
 `--help`, `--version`, and test runs that reference your app.
 
 **Manual — when you want control.** `BannerRuntime` is public, so you can decide yourself when, whether and where the
-banner appears. Two members:
+banner appears:
 
 ```csharp
 using Banner;
@@ -143,6 +143,30 @@ logger.LogInformation("{Banner}", BannerRuntime.Banner());
 
 Useful behind a `--quiet` flag, only in `Development`, after a configuration check, or somewhere other than
 `Console.Out`.
+
+### Overriding the detection
+
+`Banner()` decides for itself whether to use colour, from `NO_COLOR`, output redirection and `TERM`. When you know
+better than that check does, there is an overload that takes the decisions instead:
+
+```csharp
+string Banner(bool useColor, bool poweredBy)
+```
+
+```csharp
+// Writing somewhere you know renders ANSI, even though stdout is redirected.
+await response.WriteAsync(BannerRuntime.Banner(useColor: true, poweredBy: false));
+```
+
+```csharp
+// Or strip both, for a plain-text health endpoint or a log line.
+logger.LogInformation("{Banner}", BannerRuntime.Banner(useColor: false, poweredBy: false));
+```
+
+Use named arguments. `Banner(true, false)` compiles and tells a reader nothing.
+
+The tagline is padded to the width of the **plain** banner in both cases, so it stays aligned whether or not colour
+is emitted — escape sequences add characters without occupying columns.
 
 ## Configuration
 
