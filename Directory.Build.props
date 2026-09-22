@@ -1,0 +1,36 @@
+<Project>
+
+    <!--
+      Imported automatically into every project beneath this directory, before the project file
+      itself. Shared package metadata and source-debugging settings live here so the two packable
+      projects cannot drift apart.
+    -->
+    <PropertyGroup>
+        <Authors>Eddie Carpenter</Authors>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/eddiecarpenter/DotNetBanner</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/eddiecarpenter/DotNetBanner</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <!--
+      SourceLink. The .NET 8+ SDK has it built in, so no PackageReference is needed: it stamps the
+      PDB with the commit and a URL for every source file, letting a consumer's debugger step into
+      this code with real source fetched from GitHub.
+    -->
+    <PropertyGroup>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+        <!--
+          Normalises paths so a build is byte-identical wherever it runs, which SourceLink needs to
+          resolve files. Only in CI: locally it would point the debugger at paths that do not exist
+          on this machine.
+        -->
+        <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+    </PropertyGroup>
+
+</Project>

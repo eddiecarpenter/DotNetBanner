@@ -14,14 +14,8 @@
     <PropertyGroup>
         <PackageId>DotNetBanner</PackageId>
         <Version>0.1.0</Version>
-        <Authors>Eddie Carpenter</Authors>
         <Description>Generates a colourful FIGlet ASCII-art startup banner at build time.</Description>
         <PackageTags>figlet;banner;ascii-art;source-generator</PackageTags>
-        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/eddiecarpenter/DotNetBanner</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageProjectUrl>https://github.com/eddiecarpenter/DotNetBanner</PackageProjectUrl>
     </PropertyGroup>
 
     <!-- Build the generator first, without referencing its types or flowing it to consumers. -->
