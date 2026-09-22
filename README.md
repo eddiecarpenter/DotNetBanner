@@ -235,18 +235,6 @@ The full list and their authors is in [FIGLET-FONTS.md](FIGLET-FONTS.md).
 | `BAN002` | `BannerColor` is not a name, hex colour, or `default`           |
 | `BAN003` | `BannerAlignment` is not `left`, `center` or `right`            |
 
-## Differences from the Quarkus extension
-
-| | Quarkus | .NET |
-|---|---|---|
-| Configuration | `application.properties` | MSBuild properties in the `.csproj` |
-| Build-time step | Quarkus augmentation | Roslyn incremental source generator |
-| Runtime hook | recorder + `TextBannerFormatter` | `[ModuleInitializer]` or `IHostedService` |
-| Log integration | banner is a header on the log stream | banner is printed alongside; logging is untouched |
-| Background colour | supported | **not supported** — a FIGlet block is mostly blank, so it renders poorly |
-| Tagline version | Quarkus version, baked in at build | .NET version, read at **runtime** (the app may roll forward) |
-| Live preview | Dev UI page | none |
-
 ## Rendering
 
 Banners are drawn by a small, self-contained FIGlet renderer — a clean-room implementation of the public FIGfont v2
