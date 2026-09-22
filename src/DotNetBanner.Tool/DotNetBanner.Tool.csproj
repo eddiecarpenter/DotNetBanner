@@ -10,7 +10,19 @@
         <ToolCommandName>dotnet-banner</ToolCommandName>
         <PackageId>DotNetBanner.Tool</PackageId>
         <Version>0.1.0</Version>
+        <Authors>Eddie Carpenter</Authors>
+        <Description>Lists the fonts and colours available to DotNetBanner, and previews a banner without rebuilding.</Description>
+        <PackageTags>figlet;banner;ascii-art;dotnet-tool</PackageTags>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/eddiecarpenter/DotNetBanner</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/eddiecarpenter/DotNetBanner</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\README.md" Pack="true" PackagePath="" Visible="false"/>
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Banner\Banner.csproj"/>
