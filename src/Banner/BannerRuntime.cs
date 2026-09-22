@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace Banner;
@@ -15,20 +16,25 @@ public static class BannerRuntime
     private static int _printed = 0;
 
     /// <summary>The banner with no ANSI escape codes. <c>null</c> until <see cref="Register"/> is called.</summary>
-    public static string? Plain { get; private set; }
+    internal static string? Plain { get; private set; }
 
     /// <summary>The banner with ANSI colour codes. <c>null</c> until <see cref="Register"/> is called.</summary>
-    public static string? Colored { get; private set; }
+    internal static string? Colored { get; private set; }
 
     /// <summary>Whether to append the <c>Powered by .NET</c> tagline. Set by <c>&lt;BannerPoweredBy&gt;</c>.</summary>
-    public static bool PoweredBy { get; private set; }
+    internal static bool PoweredBy { get; private set; }
 
     /// <summary>
-    /// Supplies the banner rendered at build time. Called by generated code; you should not need to call it.
+    /// Supplies the banner rendered at build time.
+    /// <para>
+    /// Called by the generated module initializer, which lives in the consuming assembly — hence public,
+    /// and hidden from IntelliSense. There is no reason to call it yourself.
+    /// </para>
     /// </summary>
     /// <param name="plain">The banner without escape codes.</param>
     /// <param name="colored">The banner with ANSI colour codes.</param>
     /// <param name="poweredBy">Whether to append the <c>Powered by .NET</c> tagline.</param>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static void Register(string plain, string colored, bool poweredBy)
     {
         Plain = plain;
