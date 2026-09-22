@@ -40,6 +40,19 @@ renders your text into ASCII art and emits it into your assembly as a `const str
 
 The 3 MB of fonts live in the analyzer assembly, which the compiler loads and your application never references.
 
+## Requirements
+
+- **.NET 10** or later
+- **Windows, macOS and Linux** — build and tests run on all three in CI
+
+The renderer runs inside the compiler, so nothing platform-specific reaches your application: it
+ships a string constant.
+
+> [!NOTE]
+> On Windows, ANSI escape sequences are only interpreted when virtual terminal processing is enabled
+> on the console handle. Windows Terminal generally has it on; the legacy console host does not, and
+> this package does not enable it for you. See [Colour](#colour).
+
 ## Installation
 
 ```bash
