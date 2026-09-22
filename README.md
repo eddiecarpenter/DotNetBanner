@@ -237,7 +237,7 @@ The full list and their authors is in [FIGLET-FONTS.md](FIGLET-FONTS.md).
 
 ## Rendering
 
-Banners are drawn by a small, self-contained FIGlet renderer — a clean-room implementation of the public FIGfont v2
+Banners are drawn by a small, self-contained FIGlet renderer — an implementation of the public FIGfont v2
 standard. It carries **no third-party rendering dependency**, and it never reaches your application: it runs inside the
 compiler and only the resulting string is emitted.
 
