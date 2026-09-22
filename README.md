@@ -90,7 +90,7 @@ was handed, which is the quickest way to check.
 
 ## Printing the banner
 
-Two routes. Pick one.
+Three routes. Pick one.
 
 **Explicit — the .NET way.** One line, and the banner prints when the host starts, above your application's own logs:
 
@@ -116,7 +116,28 @@ that prints the banner **before `Main` runs**, with no code at all:
 Useful for console tools that have no host. Be aware it fires whenever the assembly is loaded — including for
 `--help`, `--version`, and test runs that reference your app.
 
-Printing is idempotent, so enabling both is harmless.
+**Manual — when you want control.** `BannerRuntime` is public, so you can decide yourself when, whether and where the
+banner appears:
+
+```csharp
+using Banner;
+
+BannerRuntime.PrintBanner();       // write it to the console
+```
+
+```csharp
+string banner = BannerRuntime.Banner();   // or take the string and do as you like
+
+logger.LogInformation("{Banner}", banner);
+```
+
+`Banner()` returns the banner already resolved for the current console — the coloured or the plain variant as
+appropriate, with the `Powered by .NET` tagline appended if enabled. Useful when you want it behind a `--quiet` flag,
+only in `Development`, after a configuration check, or somewhere other than `Console.Out`.
+
+Leave `BannerAutoPrint` off if you take this route, or the banner will already have been printed before `Main` runs.
+
+Printing is idempotent — the first call wins — so no combination of these three can print it twice.
 
 ## Configuration
 
