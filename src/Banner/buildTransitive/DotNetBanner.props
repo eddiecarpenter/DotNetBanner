@@ -1,0 +1,18 @@
+<Project>
+
+    <!--
+      Hands the banner settings to the source generator. MSBuild properties are not visible to a
+      generator unless declared this way, so without these the settings would be silently ignored.
+      Imported automatically by NuGet because the file name matches the package id.
+    -->
+    <ItemGroup>
+        <CompilerVisibleProperty Include="BannerText" />
+        <CompilerVisibleProperty Include="BannerFont" />
+        <CompilerVisibleProperty Include="BannerColor" />
+        <CompilerVisibleProperty Include="BannerAlignment" />
+        <CompilerVisibleProperty Include="BannerLineSpacing" />
+        <CompilerVisibleProperty Include="PoweredBy" />
+        <CompilerVisibleProperty Include="AutoPrint" />
+    </ItemGroup>
+
+</Project>

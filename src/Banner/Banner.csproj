@@ -11,20 +11,35 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <PackageId>Banner</PackageId>
+        <PackageId>DotNetBanner</PackageId>
         <Version>0.1.0</Version>
         <Authors>Eddie Carpenter</Authors>
         <Description>Generates a colourful FIGlet ASCII-art startup banner at build time.</Description>
         <PackageTags>figlet;banner;ascii-art;source-generator</PackageTags>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/…</RepositoryUrl>
+        <RepositoryUrl>https://github.com/eddiecarpenter/DotNetBanner</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageProjectUrl>https://github.com/eddiecarpenter/DotNetBanner</PackageProjectUrl>
     </PropertyGroup>
 
+    <!-- Build the generator first, without referencing its types or flowing it to consumers. -->
     <ItemGroup>
+        <ProjectReference Include="..\Banner.Generator\Banner.Generator.csproj"
+                          PrivateAssets="all"
+                          ReferenceOutputAssembly="false"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- analyzers/dotnet/cs is the folder convention that makes NuGet pass this to the compiler. -->
         <None Include="..\Banner.Generator\bin\$(Configuration)\netstandard2.0\Banner.Generator.dll"
               Pack="true"
               PackagePath="analyzers/dotnet/cs"
               Visible="false"/>
+
+        <None Include="buildTransitive\DotNetBanner.props" Pack="true" PackagePath="buildTransitive"/>
+
+        <None Include="..\..\README.md" Pack="true" PackagePath="" Visible="false"/>
     </ItemGroup>
 
 </Project>
