@@ -1,15 +1,18 @@
-name: Release
+name: Release (GitHub)
 
+# Runs on a tag. Everything here is reversible: GitHub Packages versions can be
+# deleted and a draft release can be discarded, so this is the rehearsal.
 on:
   push:
     tags: [ 'v*' ]
 
-jobs:
-  publish:
-    runs-on: ubuntu-latest
+permissions:
+  contents: write   # create the release
+  packages: write   # push to GitHub Packages
 
-    permissions:
-      contents: read
+jobs:
+  stage:
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -37,16 +40,23 @@ jobs:
           dotnet pack src/Banner            -c Release -p:Version=${{ steps.version.outputs.version }} -o artifacts
           dotnet pack src/DotNetBanner.Tool -c Release -p:Version=${{ steps.version.outputs.version }} -o artifacts
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: packages
-          path: artifacts/*
-
-      # NuGet versions are immutable: a bad push cannot be replaced, only unlisted.
-      # Everything above has to pass before this runs.
-      - name: Push to NuGet
+      # A real push over HTTP with real authentication -- everything nuget.org
+      # does, except that these versions can be deleted if something is wrong.
+      - name: Push to GitHub Packages
         run: >
           dotnet nuget push "artifacts/*.nupkg"
-          --source https://api.nuget.org/v3/index.json
-          --api-key ${{ secrets.NUGET_API_KEY }}
+          --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+          --api-key ${{ secrets.GITHUB_TOKEN }}
           --skip-duplicate
+
+      # Draft, not published: publishing it is the human decision that triggers
+      # the nuget.org workflow.
+      - name: Create a draft release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh release create "$GITHUB_REF_NAME"
+          --draft
+          --title "$GITHUB_REF_NAME"
+          --generate-notes
+          artifacts/*.nupkg artifacts/*.snupkg

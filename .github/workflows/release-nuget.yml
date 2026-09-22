@@ -1,0 +1,55 @@
+name: Release (NuGet)
+
+# Publishing the draft release created by "Release (GitHub)" triggers this.
+# NuGet versions are immutable -- a bad push can only be unlisted, never
+# replaced -- so the trigger is a deliberate human action, not a tag.
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to publish, e.g. v0.1.0'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    # Optional: configure a "nuget" environment in repository settings with
+    # required reviewers to add an approval step before this runs.
+    environment: nuget
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Resolve the tag
+        id: tag
+        run: echo "tag=${{ github.event.inputs.tag || github.event.release.tag_name }}" >> "$GITHUB_OUTPUT"
+
+      # Downloaded rather than rebuilt, so what reaches nuget.org is byte for byte
+      # what was already staged and tested.
+      - name: Download the staged packages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh release download "${{ steps.tag.outputs.tag }}"
+          --pattern '*.nupkg' --pattern '*.snupkg'
+          --dir artifacts
+
+      - name: List what is about to be published
+        run: ls -l artifacts
+
+      - name: Push to NuGet
+        run: >
+          dotnet nuget push "artifacts/*.nupkg"
+          --source https://api.nuget.org/v3/index.json
+          --api-key ${{ secrets.NUGET_API_KEY }}
+          --skip-duplicate
