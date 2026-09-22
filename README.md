@@ -12,12 +12,11 @@ printed when your application starts.
 A .NET port of the [Quarkus Banner extension](https://github.com/quarkiverse/quarkus-banner).
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/eddiecarpenter/DotNetBanner/main/docs/example.svg" alt="A startup banner reading DotNetBanner in cyan, white and magenta, with a Powered by .NET tagline" width="620">
+  <img src="https://raw.githubusercontent.com/eddiecarpenter/DotNetBanner/main/docs/dotnetbanner.png" alt="A startup banner reading DotNetBanner, with Banner in red, above a right-aligned Powered by .NET tagline" width="620">
 </p>
 
 ```xml
-<BannerText>{bright-cyan}Dot{bright-white}Net{bright-magenta}Banner</BannerText>
-<BannerFont>slant</BannerFont>
+<BannerText>DotNet{red}Banner</BannerText>
 ```
 
 ### Highlights
