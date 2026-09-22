@@ -1,3 +1,4 @@
+using Banner;
 using Banner.Generator;
 
 return args switch
@@ -42,6 +43,7 @@ static int Preview(string[] args)
     var colour = "default";
     var alignment = "left";
     var spacing = 1;
+    var poweredBy = true;
 
     for (var i = 0; i + 1 < args.Length; i += 2)
     {
@@ -52,6 +54,7 @@ static int Preview(string[] args)
             case "--color" or "--colour": colour = args[i + 1]; break;
             case "--alignment": alignment = args[i + 1]; break;
             case "--spacing": spacing = int.TryParse(args[i + 1], out var n) ? n : 1; break;
+            case "--powered-by": poweredBy = !bool.TryParse(args[i + 1], out var on) || on; break;
             default: return Fail($"Unknown option '{args[i]}'.");
         }
     }
@@ -76,7 +79,11 @@ static int Preview(string[] args)
 
     var rendered = BannerRenderer.RenderBanner(fontStream, text, foreground, align, spacing);
 
-    Console.Write(UseColour() ? rendered.Colored : rendered.Plain);
+    // Compose through the runtime, so the preview is exactly what the application would print:
+    // the same plain/coloured choice and the same "Powered by .NET" tagline.
+    BannerRuntime.Register(rendered.Plain, rendered.Colored, poweredBy);
+
+    Console.Write(BannerRuntime.Banner());
 
     return 0;
 }
@@ -97,6 +104,7 @@ static int Usage()
           --color <colour>           Colour for unmarked text       (default: default)
           --alignment <alignment>    left, center or right          (default: left)
           --spacing <rows>           Blank rows between lines       (default: 1)
+          --powered-by <bool>        Show the "Powered by" tagline  (default: true)
 
         Example:
 
