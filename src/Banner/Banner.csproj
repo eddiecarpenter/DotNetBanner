@@ -13,7 +13,7 @@
 
     <PropertyGroup>
         <PackageId>DotNetBanner</PackageId>
-        <Version>0.1.0</Version>
+        <Version>1.0.0</Version>
         <Description>Generates a colourful FIGlet ASCII-art startup banner at build time.</Description>
         <PackageTags>figlet;banner;ascii-art;source-generator</PackageTags>
     </PropertyGroup>
