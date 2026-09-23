@@ -9,7 +9,7 @@
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>dotnet-banner</ToolCommandName>
         <PackageId>DotNetBanner.Tool</PackageId>
-        <Version>0.1.0</Version>
+        <Version>1.0.0</Version>
         <Description>Lists the fonts and colours available to DotNetBanner, and previews a banner without rebuilding.</Description>
         <PackageTags>figlet;banner;ascii-art;dotnet-tool</PackageTags>
     </PropertyGroup>

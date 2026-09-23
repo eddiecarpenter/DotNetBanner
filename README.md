@@ -16,9 +16,7 @@ printed when your application starts.
 
 A .NET port of the [Quarkus Banner extension](https://github.com/quarkiverse/quarkus-banner).
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/eddiecarpenter/DotNetBanner/main/docs/dotnetbanner.png" alt="A startup banner reading DotNetBanner, with Banner in red, above a right-aligned Powered by .NET tagline" width="620">
-</p>
+![A startup banner reading DotNetBanner, with Banner in red, above a right-aligned Powered by .NET tagline](https://raw.githubusercontent.com/eddiecarpenter/DotNetBanner/main/docs/dotnetbanner.png)
 
 ```xml
 <BannerText>DotNet{red}Banner</BannerText>
@@ -68,7 +66,7 @@ Or in your `.csproj`:
 
 ```xml
 <ItemGroup>
-    <PackageReference Include="DotNetBanner" Version="1.0.0-preview.1" />
+    <PackageReference Include="DotNetBanner" Version="1.0.0" />
 </ItemGroup>
 ```
 
